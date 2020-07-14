@@ -38,6 +38,30 @@ minor_har_interval = (2, 1, 2, 2, 1, 3, 1)
 arpeggio_interval = (4, 3, 5)
 arpeggio_dec_interval = (2, 3, 2, 4, 1)
 diminushed_interval = (2, 1, 2, 1, 2, 1, 2, 1)
+blues_interval = (3, 2, 1, 1, 3)
+
+
+def rotate(l, n):
+    return l[n:] + l[:n]
+
+
+dorian_interval = rotate(major_interval, 1)
+phrygian_interval = rotate(major_interval, 2)
+lydian_interval = rotate(major_interval, 3)
+mixolydian_interval = rotate(major_interval, 4)
+# aeolian == minor natural
+aeolian_interval = rotate(major_interval, 5)
+locrian_interval = rotate(major_interval, 6)
+
+# print(major_interval)
+# print(dorian_interval)
+# print(phrygian_interval)
+# print(lydian_interval)
+# print(mixolydian_interval)
+# print(aeolian_interval)
+# print("minor" + str(minor_nat_interval))
+# print(locrian_interval)
+
 tons = [False, True, False, True, False, True, True, False, True, False, True, True, False, True, False, True, False,
         True, True,
         False, True, False, True, True, False, True, False, True, False, True, True, False, True, False, True, True,
@@ -45,7 +69,6 @@ tons = [False, True, False, True, False, True, True, False, True, False, True, T
 
 step = 1
 space = 0.075
-
 
 def get_scale(interval, start, nb_octave=1):
     ret = [None] * len(chromatic)
@@ -98,6 +121,24 @@ def adapt(ax, title=None):
     ax.spines["left"].set_visible(False)
     if title:
         ax.set_title("C5#", fontsize=4)
+
+
+def valves():
+    fig, ax = subplots(1, 1, figsize=(1, 1), dpi=100, facecolor='w', sharey=True)
+    fig.suptitle("1 2 3", fontsize=22, x=0.5, y=0)
+    fig.subplots_adjust(top=2.3)
+    adapt(ax)
+    ax.set_ylim(0, 9)
+    c = 'gray'
+    draw_note(ax, 8, finger_codec[0], c)
+    draw_note(ax, 7, finger_codec[1], c)
+    draw_note(ax, 6, finger_codec[2], c)
+    draw_note(ax, 5, finger_codec[3], c)
+    draw_note(ax, 4, finger_codec[12], c)
+    draw_note(ax, 3, finger_codec[23], c)
+    draw_note(ax, 2, finger_codec[13], c)
+    draw_note(ax, 1, finger_codec[123], c)
+    fig.savefig("valves.png", bbox_inches='tight')
 
 
 def all_majors():
@@ -199,10 +240,44 @@ def arpeggios():
         g += 2
     fig.savefig("arpeggios.png", bbox_inches='tight')
 
+def blues():
+    fig, ax = subplots(1, 1, figsize=(7, 4), dpi=dpi, facecolor='w', sharey=True)
+    fig.suptitle("Blues", fontsize=7)
+    fig.subplots_adjust(top=2.3)
+    adapt(ax)
+    draw_scale(ax, get_scale(blues_interval, 6))
+    fig.savefig("blues.png", bbox_inches='tight')
 
+def major_modes():
+    fig, axs = subplots(1, 7, figsize=(7, 4), dpi=dpi, facecolor='w', sharey=True)
+    fig.suptitle("Modes", fontsize=7)
+    fig.subplots_adjust(top=2.3)
+    for ax in axs:
+        adapt(ax)
+    axs[0].set_title("major", fontsize=6)
+    draw_scale(axs[0], get_scale(major_interval, 6))
+    axs[1].set_title("dorian", fontsize=6)
+    draw_scale(axs[1], get_scale(dorian_interval, 6))
+    axs[2].set_title("phrygian", fontsize=6)
+    draw_scale(axs[2], get_scale(phrygian_interval, 6))
+    axs[3].set_title("lydian", fontsize=6)
+    draw_scale(axs[3], get_scale(lydian_interval, 6))
+    axs[4].set_title("mixolydian", fontsize=6)
+    draw_scale(axs[4], get_scale(mixolydian_interval, 6))
+    axs[5].set_title("aeolian", fontsize=6)
+    draw_scale(axs[5], get_scale(aeolian_interval, 6))
+    axs[6].set_title("locrian", fontsize=6)
+    draw_scale(axs[6], get_scale(locrian_interval, 6))
+    fig.savefig("modes.png", bbox_inches='tight')
+
+
+
+valves()
 all_majors_quinte_double()
 all_majors_quinte()
 all_majors()
 all_minors()
 arpeggios()
 diminushed_scale()
+blues()
+major_modes()

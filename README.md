@@ -35,6 +35,8 @@ Diminushed scales:
 Arpeggios:
 ![Arpeggios](arpeggios.png)
 
+Modes:
+![Major modes](modes.png)
 
 Why doing this?
 - Reading such mosaic scale is much easier than reading notes, you don't even need to be able to read music 
